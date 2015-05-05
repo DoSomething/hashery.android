@@ -69,7 +69,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 mEncodeResult.setText(result);
             }
             else {
-                Toast.makeText(MainActivity.this, "Invalid code", Toast.LENGTH_SHORT);
+                Toast.makeText(MainActivity.this, "Invalid code", Toast.LENGTH_SHORT).show();
             }
         }
     }
