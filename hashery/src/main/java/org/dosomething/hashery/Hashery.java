@@ -82,7 +82,7 @@ public class Hashery {
 
     /**
      * This is the first step in the process of converting a number to its String representation. The
-     * number gets converted from base-10 to base-A, where A is the length of an item in mWords.
+     * number gets converted from base-10 to base-N, where N is the length of an item in mWords.
      *
      * For example, if mWords[0] is an array of length 40, then we're converting to base-40.
      *
@@ -90,7 +90,7 @@ public class Hashery {
      * the length of mWords.
      *
      * @param val Base-10 number to convert
-     * @return ArrayList representation of the base-A conversion
+     * @return ArrayList representation of the base-N conversion
      */
     private ArrayList<Integer> baseConversion(int val) {
         ArrayList<Integer> result = new ArrayList<Integer>();
@@ -108,10 +108,10 @@ public class Hashery {
     }
 
     /**
-     * This is the second step of the conversion. Maps the integer values of the base-A conversion
+     * This is the second step of the conversion. Maps the integer values of the base-N conversion
      * to corresponding strings in the mWords array of arrays.
      *
-     * @param vals ArrayList representation of the base-A converted number
+     * @param vals ArrayList representation of the base-N converted number
      * @return String
      */
     private String convertToWord(ArrayList<Integer> vals) {
@@ -132,15 +132,67 @@ public class Hashery {
     }
 
     /**
-     * @todo IMPLEMENT ME
-     *
-     *
+     * Decode a string to its original base-10 number.
      *
      * @param val String to decode
-     * @return int
+     * @return int On success, returns the decoded number. On failure, returns -1.
      */
     public int decode(String val) {
-        return 0;
+        ArrayList<String> baseN = new ArrayList<String>();
+
+        // With no clear delimiter between words, search for the word matches against the mWords arrays.
+
+        int matchesFound = 0;
+
+        String encoded = val;
+        while (encoded.length() > 0) {
+            boolean matchFound = false;
+
+            // If text still remains and all word arrays have been gone through, then it's invalid.
+            if (matchesFound >= mWords.size()) {
+                return -1;
+            }
+
+            ArrayList<String> words = mWords.get(matchesFound);
+            for (int i = 0; i < words.size() && !matchFound; i++) {
+                String word = words.get(i);
+                if (encoded.indexOf(word) == 0) {
+                    matchFound = true;
+
+                    // Add to baseN array
+                    baseN.add(Integer.toString(i));
+
+                    // Increment to move on to next mWords item
+                    matchesFound++;
+
+                    // Remove word from encoded string
+                    encoded = encoded.substring(word.length());
+                }
+            }
+
+            // If no match is found on any of the word checks, then we have an invalid code.
+            if (!matchFound) {
+                return -1;
+            }
+        }
+
+        // Sanity check that length of baseN is same as mWords
+        if (baseN.size() != mWords.size()) {
+            return -1;
+        }
+
+        // The result of the previous step is a base-N representation of the original base-10 number.
+        // Now we convert back to base-10.
+
+        int result = 0;
+        for (int i = 0; i < baseN.size(); i++) {
+            int n = Integer.parseInt(baseN.get(i));
+            int pow = baseN.size() - 1 - i;
+
+            result += n * Math.pow((double)mBase, (double)pow);
+        }
+
+        return result;
     }
 
 }

@@ -19,6 +19,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button mEncodeButton;
     private TextView mEncodeResult;
 
+    private EditText mDecodeInput;
+    private Button mDecodeButton;
+    private TextView mDecodeResult;
+
     private Hashery mHashery;
 
     @Override
@@ -32,7 +36,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mEncodeButton = (Button)findViewById(R.id.encode_button);
         mEncodeResult = (TextView)findViewById(R.id.encode_result);
 
+        mDecodeInput = (EditText)findViewById(R.id.decode_input);
+        mDecodeButton = (Button)findViewById(R.id.decode_button);
+        mDecodeResult = (TextView)findViewById(R.id.decode_result);
+
         mEncodeButton.setOnClickListener(this);
+        mDecodeButton.setOnClickListener(this);
 
         // Adjectives
         String[] adjectives = {"abandoned","able","absolute","adorable","adventurous","academic","acceptable","acclaimed","accomplished","accurate","aching","acidic","acrobatic","babyish","bad","back","baggy","bare","barren","basic","beautiful","belated","beloved","gargantuan","gaseous","general","generous","gentle","genuine","giant","giddy","gigantic","obedient","obese","oblong","oily","oblong","obvious","occasional","palatable"};
@@ -69,7 +78,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 mEncodeResult.setText(result);
             }
             else {
-                Toast.makeText(MainActivity.this, "Invalid code", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Unable to encode: invalid", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (view.getId() == R.id.decode_button) {
+            String input = mDecodeInput.getText().toString();
+
+            int decoded = mHashery.decode(input);
+
+            if (decoded >= 0) {
+                mDecodeResult.setText(Integer.toString(decoded));
+            }
+            else {
+                Toast.makeText(MainActivity.this, "Unable to decode: invalid", Toast.LENGTH_SHORT).show();
             }
         }
     }
