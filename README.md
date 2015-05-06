@@ -49,6 +49,8 @@ int decoded = hashery.decode(encodedString);
 
 There's also sample Android app [code](https://github.com/DoSomething/hashery.android/blob/master/app/src/main/java/org/dosomething/hashery/samples/MainActivity.java) included that can be helpful.
 
+![hashery sample screenshot](https://raw.githubusercontent.com/DoSomething/hashery.android/master/hashery_example.png)
+
 #### Limitations
 
 - The library does not come with its own set of default words. They must be provided.
